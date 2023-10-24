@@ -28,12 +28,22 @@ function handleSignUpClick(e) {
       // hiển thị message lỗi
       let message = name + " không được để trống";
       divMessageSelector.textContent = message;
-    } else if (
-      valueInput.length < 3 &&
-      inputSelector.getAttribute("minValidate") === "have_validate"
-    ) {
-      let message = name + " tối thiểu 3 kí tự";
-      divMessageSelector.textContent = message;
+    } else if (name === "email") {
+      // validate email tối thiểu minLenght kí tự
+      let minLenght = inputSelector.getAttribute("min_lenght");
+      if (valueInput.length < minLenght) {
+        let message = name + " tối thiểu " + minLenght + " kí tự";
+        divMessageSelector.textContent = message;
+      }
+    } else if (name === "password") {
+      //validate password tối thiểu 8 kí tự
+      let minLenght = inputSelector.getAttribute("min_lenght");
+      if (valueInput.length < minLenght) {
+        let message = name + " tối thiểu " + minLenght + " kí tự";
+        divMessageSelector.textContent = message;
+      }
+    } else {
+      divMessageSelector.textContent = "";
     }
   }
 }
