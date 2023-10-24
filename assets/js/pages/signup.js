@@ -33,7 +33,7 @@ function handleSignUpClick(e) {
       minLengthValidate(inputSelector, name);
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
-      minLengthValidate(inputSelector, name);
+      minLengthValidate(inputSelector, name, "password phải có đủ 8 kí tự");
     } else {
       divMessageSelector.textContent = "";
     }
@@ -41,7 +41,7 @@ function handleSignUpClick(e) {
 }
 // rule validate mi-lenght
 
-function minLengthValidate(inputSelector, name) {
+function minLengthValidate(inputSelector, name, message) {
   let valueInput = inputSelector.value;
   let divMessageSelector = inputSelector
     .closest(".form-group")
@@ -49,8 +49,11 @@ function minLengthValidate(inputSelector, name) {
   //optional
   let minLenght = inputSelector.getAttribute("min_lenght");
   if (valueInput.length < minLenght) {
-    let message = name + " tối thiểu " + minLenght + " kí tự";
-    divMessageSelector.textContent = message;
+    let messageError = name + " tối thiểu " + minLenght + " kí tự";
+    if (message) {
+      messageError = message;
+    }
+    divMessageSelector.textContent = messageError;
   }
 }
 // 3. Thêm sự kiện cho phần tử
