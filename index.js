@@ -16,10 +16,26 @@ console.log(x);
 // }
 // console.log(y);
 let y = "global scope";
-if (true) {
-  let y = " global scope in if";
-  // let y trong và let y ngoài là 2 biên scope khác nhau, let y trong là scope của trong if còn, let y ngoài là global scope
-}
-console.log(y);
+// if (true) {
+//   let y = " global scope in if";
+//   // let y trong và let y ngoài là 2 biên scope khác nhau, let y trong là scope của trong if còn, let y ngoài là global scope
+// }
+// sự dụng function
+// function changValue() {
+//   var y = "function scope";
+//   console.log(y);
+// }
+// changValue();
+// console.log(y);
+
 // 3. Hoisting -- var có -- let ,  const không
+// console.log(z);
+// let z = 20;
+// z = 30;
 // 4. Gán lại value hay còn gọi là update value -- var, let có, const không
+
+const z2 = {
+  name: "ducdo",
+};
+z2.name = "dung";
+console.log(z2);
