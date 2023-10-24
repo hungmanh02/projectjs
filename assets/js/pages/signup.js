@@ -31,7 +31,8 @@ function handleSignUpClick(e) {
       divMessageSelector.textContent = message;
     } else if (name === "email") {
       // validate email tối thiểu minLenght kí tự
-      minLengthValidate(inputSelector, name);
+      // minLengthValidate(inputSelector, name);
+      emailRegexValidate(inputSelector, name);
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
       minLengthValidate(inputSelector, name, "password phải có đủ 8 kí tự");
@@ -40,8 +41,24 @@ function handleSignUpClick(e) {
     }
   }
 }
-// rule validate mi-lenght
+// rule validate regex email
+function emailRegexValidate(inputSelector, name, message) {
+  let valueInput = inputSelector.value;
+  let isValidRegex = regexEmail.test(valueInput);
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  if (isValidRegex == false) {
+    inputSelector.classList.add("error");
+    let messageError = "Không phải định dạng " + name + " hợp lệ";
+    if (message) {
+      messageError = message;
+    }
+    divMessageSelector.textContent = messageError;
+  }
+}
 
+// rule validate min-lenght
 function minLengthValidate(inputSelector, name, message) {
   let valueInput = inputSelector.value;
   let divMessageSelector = inputSelector
