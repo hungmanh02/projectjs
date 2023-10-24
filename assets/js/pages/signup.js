@@ -30,24 +30,29 @@ function handleSignUpClick(e) {
       divMessageSelector.textContent = message;
     } else if (name === "email") {
       // validate email tối thiểu minLenght kí tự
-      let minLenght = inputSelector.getAttribute("min_lenght");
-      if (valueInput.length < minLenght) {
-        let message = name + " tối thiểu " + minLenght + " kí tự";
-        divMessageSelector.textContent = message;
-      }
+      minLengthValidate(inputSelector, name);
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
-      let minLenght = inputSelector.getAttribute("min_lenght");
-      if (valueInput.length < minLenght) {
-        let message = name + " tối thiểu " + minLenght + " kí tự";
-        divMessageSelector.textContent = message;
-      }
+      minLengthValidate(inputSelector, name);
     } else {
       divMessageSelector.textContent = "";
     }
   }
 }
+// rule validate mi-lenght
 
+function minLengthValidate(inputSelector, name) {
+  let valueInput = inputSelector.value;
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  //optional
+  let minLenght = inputSelector.getAttribute("min_lenght");
+  if (valueInput.length < minLenght) {
+    let message = name + " tối thiểu " + minLenght + " kí tự";
+    divMessageSelector.textContent = message;
+  }
+}
 // 3. Thêm sự kiện cho phần tử
 
 btnSignUpSelector.addEventListener("click", handleSignUpClick);
