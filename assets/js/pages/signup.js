@@ -17,9 +17,8 @@ function handleSignUpClick(e) {
 
   // tối ưu validate
   // 1. Thực hiện validate
-  for (let i = 0; inputAllSelector.length; i++) {
+  for (let i = 0; i < inputAllSelector.length; i++) {
     let inputSelector = inputAllSelector[i];
-    // console.log(inputSelector);
     let valueInput = inputSelector.value;
     let divMessageSelector = inputSelector
       .closest(".form-group")
@@ -64,14 +63,20 @@ function handleSignUpClick(e) {
         showSuccess(inputSelector, divMessageSelector);
       }
     } else {
-      let isMinLenghtValid;
       let isRequireValid = requireValidate(inputSelector, name);
+      let isMinLenghtValid;
+      let isCompareValid;
       //validate password tối thiểu 8 kí tự
       if (isRequireValid) {
         isMinLenghtValid = minLengthValidate(inputSelector, name);
       }
-      // check success
+
+      // validate compare with password
       if (isRequireValid && isMinLenghtValid) {
+        isCompareValid = compareFileValidate(inputSelector, name);
+      }
+      if (isRequireValid && isMinLenghtValid && isCompareValid) {
+        // check success
         showSuccess(inputSelector, divMessageSelector);
       }
     }
@@ -81,6 +86,32 @@ function handleSignUpClick(e) {
 function showSuccess(inputSelector, divMessageSelector) {
   inputSelector.classList.remove("error");
   divMessageSelector.textContent = "";
+}
+// rule compare data
+function compareFileValidate(inputSelector, name, message) {
+  let isValid = true;
+  let valueInput = inputSelector.value;
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  let compareSelectorClass = inputSelector.getAttribute("selector_compare");
+  let compareSelector = document.querySelector("." + compareSelectorClass);
+  if (compareSelector.value !== valueInput) {
+    isValid = false;
+    // thêm viền đỏ cho input
+    inputSelector.classList.add("error");
+    // hiển thị message lỗi
+    let messageError =
+      "dữ liệu nhập ở " +
+      name +
+      " không trùng với dữ liệu nhập ở" +
+      compareSelectorClass;
+    if (message) {
+      messageError = message;
+    }
+    divMessageSelector.textContent = messageError;
+  }
+  return isValid;
 }
 // rule required validate
 function requireValidate(inputSelector, name, message) {
