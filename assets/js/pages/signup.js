@@ -29,9 +29,18 @@ function handleSignUpClick(e) {
         showSuccess(inputSelector);
       }
     } else if (name === "email") {
-      // 1. require
-      // 2. minLenght
-      // 3. regex validate email
+      if (!require(inputSelector)) {
+        showError(inputSelector, "Email không được để trống");
+      } else if (!minLenght(inputSelector)) {
+        showError(
+          inputSelector,
+          `Email tối thiểu ${inputSelector.getAttribute("min_lenght")}`
+        );
+      } else if (!emailRegex(inputSelector)) {
+        showError(inputSelector, "Email không đúng định dạng");
+      } else {
+        showSuccess(inputSelector);
+      }
     } else if (name === "password") {
       // 1. require
       // 2. minLenght
@@ -67,6 +76,21 @@ function showSuccess(inputSelector) {
     .querySelector(".error_message");
   divMessageSelector.textContent = "";
 }
+
+// rule min lenght
+function minLenght(inputSelector) {
+  let minLenght = inputSelector.getAttribute("min_lenght");
+  let inputValue = inputSelector.value;
+  if (inputValue.length < minLenght) {
+    return false;
+  }
+  return true;
+}
+// validate email regex
+function emailRegex(inputSelector) {
+  let inputValue = inputSelector.value;
+  return regexEmail.test(inputValue); // return true hoặc false
+}
 // rule compare data
 function compareFileValidate(inputSelector, name, message) {
   let isValid = true;
@@ -93,66 +117,7 @@ function compareFileValidate(inputSelector, name, message) {
   }
   return isValid;
 }
-// rule required validate
-function requireValidate(inputSelector, name, message) {
-  let isValid = true;
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  let valueInput = inputSelector.value;
-  if (valueInput === "") {
-    isValid = false;
-    // thêm viền đỏ cho input
-    inputSelector.classList.add("error");
-    // hiển thị message lỗi
-    let messageError = name + " không được để trống";
-    if (message) {
-      messageError = message;
-    }
-    divMessageSelector.textContent = messageError;
-  }
-  return isValid;
-}
-// rule validate regex email
-function emailRegexValidate(inputSelector, name, message) {
-  let isValid = true;
-  let valueInput = inputSelector.value;
-  let isValidRegex = regexEmail.test(valueInput);
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  if (isValidRegex == false) {
-    isValid = false;
-    inputSelector.classList.add("error");
-    let messageError = "Không phải định dạng " + name + " hợp lệ";
-    if (message) {
-      messageError = message;
-    }
-    divMessageSelector.textContent = messageError;
-  }
-  return isValid;
-}
 
-// rule validate min-lenght
-function minLengthValidate(inputSelector, name, message) {
-  let isValid = true;
-  let valueInput = inputSelector.value;
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  //optional
-  let minLenght = inputSelector.getAttribute("min_lenght");
-  if (valueInput.length < minLenght) {
-    isValid = false;
-    inputSelector.classList.add("error");
-    let messageError = name + " tối thiểu " + minLenght + " kí tự";
-    if (message) {
-      messageError = message;
-    }
-    divMessageSelector.textContent = messageError;
-  }
-  return isValid;
-}
 // 3. Thêm sự kiện cho phần tử
 
 btnSignUpSelector.addEventListener("click", handleSignUpClick);
