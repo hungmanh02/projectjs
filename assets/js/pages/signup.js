@@ -22,12 +22,7 @@ function handleSignUpClick(e) {
     let name = inputSelector.name;
     // validate  not empty
     if (name === "name") {
-      //require
-      if (!require(inputSelector)) {
-        showError(inputSelector, "Tên không được để trống");
-      } else {
-        showSuccess(inputSelector);
-      }
+      validateName(inputSelector);
     } else if (name === "email") {
       if (!require(inputSelector)) {
         showError(inputSelector, "Email không được để trống");
@@ -70,6 +65,15 @@ function handleSignUpClick(e) {
         showSuccess(inputSelector);
       }
     }
+  }
+}
+
+function validateName(inputSelector) {
+  //require
+  if (!require(inputSelector)) {
+    showError(inputSelector, "Tên không được để trống");
+  } else {
+    showSuccess(inputSelector);
   }
 }
 
@@ -122,7 +126,16 @@ function comparePass(inputSelector) {
   return valueConfirmPass === valuePassword;
 }
 // hàm chỉ chạy khi người dùng nhập value có sự thay đổi
-function handleChangValue(event) {}
+function handleChangValue(event) {
+  let inputSelector = event.target;
+  let nameInput = inputSelector.name;
+  if (nameInput === "name") {
+    validateName(inputSelector);
+  } else if (nameInput === "email") {
+  } else if (nameInput === "password") {
+  } else {
+  }
+}
 // 3. Thêm sự kiện cho phần tử
 
 btnSignUpSelector.addEventListener("click", handleSignUpClick);
