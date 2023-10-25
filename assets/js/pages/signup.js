@@ -43,17 +43,24 @@ function handleSignUpClick(e) {
       // validate khác
       // check validate success
       if (isMinLenghtValid && isEmailRegexValid) {
-        inputSelector.classList.remove("error");
-        divMessageSelector.textContent = "";
+        showSuccess(inputSelector, divMessageSelector);
       }
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
-      minLengthValidate(inputSelector, name, "password phải có đủ 8 kí tự");
+      let isMinLenghtValid = minLengthValidate(
+        inputSelector,
+        name,
+        "password phải có đủ 8 kí tự"
+      );
     } else {
-      inputSelector.classList.remove("error");
-      divMessageSelector.textContent = "";
+      showSuccess(inputSelector, divMessageSelector);
     }
   }
+}
+// validate success
+function showSuccess(inputSelector, divMessageSelector) {
+  inputSelector.classList.remove("error");
+  divMessageSelector.textContent = "";
 }
 // rule validate regex email
 function emailRegexValidate(inputSelector, name, message) {
