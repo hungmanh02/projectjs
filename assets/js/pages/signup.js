@@ -31,24 +31,35 @@ function handleSignUpClick(e) {
       divMessageSelector.textContent = message;
     } else if (name === "email") {
       // validate email tối thiểu minLenght kí tự
-      // minLengthValidate(inputSelector, name);
-      emailRegexValidate(inputSelector, name);
+      let isMinLenghtValid = minLengthValidate(inputSelector, name);
+
+      // validete regex email
+      let isEmailRegexValid;
+
+      if (isMinLenghtValid) {
+        isEmailRegexValid = emailRegexValidate(inputSelector, name);
+      }
+
+      // validate khác
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
       minLengthValidate(inputSelector, name, "password phải có đủ 8 kí tự");
     } else {
+      inputSelector.classList.remove("error");
       divMessageSelector.textContent = "";
     }
   }
 }
 // rule validate regex email
 function emailRegexValidate(inputSelector, name, message) {
+  let isValid = true;
   let valueInput = inputSelector.value;
   let isValidRegex = regexEmail.test(valueInput);
   let divMessageSelector = inputSelector
     .closest(".form-group")
     .querySelector(".error_message");
   if (isValidRegex == false) {
+    isValid = false;
     inputSelector.classList.add("error");
     let messageError = "Không phải định dạng " + name + " hợp lệ";
     if (message) {
@@ -56,10 +67,12 @@ function emailRegexValidate(inputSelector, name, message) {
     }
     divMessageSelector.textContent = messageError;
   }
+  return isValid;
 }
 
 // rule validate min-lenght
 function minLengthValidate(inputSelector, name, message) {
+  let isValid = true;
   let valueInput = inputSelector.value;
   let divMessageSelector = inputSelector
     .closest(".form-group")
@@ -67,12 +80,14 @@ function minLengthValidate(inputSelector, name, message) {
   //optional
   let minLenght = inputSelector.getAttribute("min_lenght");
   if (valueInput.length < minLenght) {
+    isValid = false;
     let messageError = name + " tối thiểu " + minLenght + " kí tự";
     if (message) {
       messageError = message;
     }
     divMessageSelector.textContent = messageError;
   }
+  return isValid;
 }
 // 3. Thêm sự kiện cho phần tử
 
