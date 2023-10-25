@@ -41,6 +41,11 @@ function handleSignUpClick(e) {
       }
 
       // validate khác
+      // check validate success
+      if (isMinLenghtValid && isEmailRegexValid) {
+        inputSelector.classList.remove("error");
+        divMessageSelector.textContent = "";
+      }
     } else if (name === "password") {
       //validate password tối thiểu 8 kí tự
       minLengthValidate(inputSelector, name, "password phải có đủ 8 kí tự");
