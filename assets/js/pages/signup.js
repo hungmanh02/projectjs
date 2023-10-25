@@ -42,12 +42,33 @@ function handleSignUpClick(e) {
         showSuccess(inputSelector);
       }
     } else if (name === "password") {
-      // 1. require
-      // 2. minLenght
+      if (!require(inputSelector)) {
+        showError(inputSelector, "password không được để trống");
+      } else if (!minLenght(inputSelector)) {
+        showError(
+          inputSelector,
+          `password phải ít nhất ${inputSelector.getAttribute(
+            "min_lenght"
+          )} kí tự`
+        );
+      } else {
+        showSuccess(inputSelector);
+      }
     } else {
-      // 1. require
-      // 2. minLenght
-      // 3. compare password
+      if (!require(inputSelector)) {
+        showError(inputSelector, "confirm password không được để trống");
+      } else if (!minLenght(inputSelector)) {
+        showError(
+          inputSelector,
+          `confirm password phải ít nhất ${inputSelector.getAttribute(
+            "min_lenght"
+          )} kí tự`
+        );
+      } else if (!comparePass(inputSelector)) {
+        showError(inputSelector, "confirm password không trùng với password");
+      } else {
+        showSuccess(inputSelector);
+      }
     }
   }
 }
@@ -91,31 +112,14 @@ function emailRegex(inputSelector) {
   let inputValue = inputSelector.value;
   return regexEmail.test(inputValue); // return true hoặc false
 }
-// rule compare data
-function compareFileValidate(inputSelector, name, message) {
-  let isValid = true;
-  let valueInput = inputSelector.value;
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  let compareSelectorClass = inputSelector.getAttribute("selector_compare");
-  let compareSelector = document.querySelector("." + compareSelectorClass);
-  if (compareSelector.value !== valueInput) {
-    isValid = false;
-    // thêm viền đỏ cho input
-    inputSelector.classList.add("error");
-    // hiển thị message lỗi
-    let messageError =
-      "dữ liệu nhập ở " +
-      name +
-      " không trùng với dữ liệu nhập ở" +
-      compareSelectorClass;
-    if (message) {
-      messageError = message;
-    }
-    divMessageSelector.textContent = messageError;
-  }
-  return isValid;
+// rule compare
+function comparePass(inputSelector) {
+  let valueConfirmPass = inputSelector.value;
+  let passwordSelector = document.querySelector(
+    "." + inputSelector.getAttribute("selector_compare")
+  );
+  let valuePassword = passwordSelector.value;
+  return valueConfirmPass === valuePassword;
 }
 
 // 3. Thêm sự kiện cho phần tử
