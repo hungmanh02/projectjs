@@ -92,7 +92,7 @@ function handleSignUpClick(e) {
       break;
     }
   }
-
+  // git branch
   if (isFormValid) {
     console.log("to page login");
   }
