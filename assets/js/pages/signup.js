@@ -1,9 +1,6 @@
 // 1. Chọn element
 
 const btnSignUpSelector = document.querySelector(".btn-signup");
-const inputNameSelector = document.querySelector(".name");
-const inputEmailSelector = document.querySelector(".email");
-const inputPasswordSelector = document.querySelector(".password");
 const inputAllSelector = document.querySelectorAll(".form-group input");
 const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const errorMessageAll = document.querySelectorAll(".error_message");
@@ -15,8 +12,6 @@ const errorMessageAll = document.querySelectorAll(".error_message");
 
 function handleSignUpClick(e) {
   e.preventDefault();
-  let isFormValid = true;
-  // tối ưu validate
   // 1. Thực hiện validate
   for (let i = 0; i < inputAllSelector.length; i++) {
     let inputSelector = inputAllSelector[i];
@@ -27,79 +22,49 @@ function handleSignUpClick(e) {
     let name = inputSelector.name;
     // validate  not empty
     if (name === "name") {
-      let isRequireValid = requireValidate(inputSelector, name);
-      if (isRequireValid) {
-        showSuccess(inputSelector, divMessageSelector);
+      //require
+      if (!require(inputSelector)) {
+        showError(inputSelector, "Tên không được để trống");
+      } else {
+        showSuccess(inputSelector);
       }
     } else if (name === "email") {
-      let isMinLenghtValid;
-      let isEmailRegexValid;
-      let isRequireValid = requireValidate(inputSelector, name);
-
-      // validate email tối thiểu minLenght kí tự
-      if (isRequireValid) {
-        isMinLenghtValid = minLengthValidate(inputSelector, name);
-      }
-
-      // validete regex email
-
-      if (isRequireValid && isMinLenghtValid) {
-        isEmailRegexValid = emailRegexValidate(inputSelector, name);
-      }
-
-      // validate khác
-      // check validate success
-      if (isRequireValid && isMinLenghtValid && isEmailRegexValid) {
-        showSuccess(inputSelector, divMessageSelector);
-      }
+      // 1. require
+      // 2. minLenght
+      // 3. regex validate email
     } else if (name === "password") {
-      let isMinLenghtValid;
-      let isRequireValid = requireValidate(inputSelector, name);
-      //validate password tối thiểu 8 kí tự
-      if (isRequireValid) {
-        isMinLenghtValid = minLengthValidate(inputSelector, name);
-      }
-      // check success
-      if (isRequireValid && isMinLenghtValid) {
-        showSuccess(inputSelector, divMessageSelector);
-      }
+      // 1. require
+      // 2. minLenght
     } else {
-      let isRequireValid = requireValidate(inputSelector, name);
-      let isMinLenghtValid;
-      let isCompareValid;
-      //validate password tối thiểu 8 kí tự
-      if (isRequireValid) {
-        isMinLenghtValid = minLengthValidate(inputSelector, name);
-      }
-
-      // validate compare with password
-      if (isRequireValid && isMinLenghtValid) {
-        isCompareValid = compareFileValidate(inputSelector, name);
-      }
-      if (isRequireValid && isMinLenghtValid && isCompareValid) {
-        // check success
-        showSuccess(inputSelector, divMessageSelector);
-      }
+      // 1. require
+      // 2. minLenght
+      // 3. compare password
     }
-  }
-
-  // kiểm tra không có ô input nào có lỗi validate
-  // 1. lưu vào user vào localStorage
-  // 2. redirect đến màn hình login
-  for (let i = 0; i < errorMessageAll.length; i++) {
-    if (errorMessageAll[i].textContent !== "") {
-      isFormValid = false;
-      break;
-    }
-  }
-
-  if (isFormValid) {
-    console.log("to page login");
   }
 }
+
+// rule require
+// output:return true or false
+function require(inputSelector) {
+  return inputSelector.value ? true : false;
+}
+// validate error
+function showError(inputSelector, message = null) {
+  // hiện thị màu đỏ cho ô input
+  inputSelector.classList.add("error");
+  // thêm nội dung lỗi cho message dưới ô input
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  divMessageSelector.textContent = message;
+}
+
 // validate success
-function showSuccess(inputSelector, divMessageSelector) {
+function showSuccess(inputSelector) {
   inputSelector.classList.remove("error");
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
   divMessageSelector.textContent = "";
 }
 // rule compare data
