@@ -64,7 +64,16 @@ function handleSignUpClick(e) {
         showSuccess(inputSelector, divMessageSelector);
       }
     } else {
-      showSuccess(inputSelector, divMessageSelector);
+      let isMinLenghtValid;
+      let isRequireValid = requireValidate(inputSelector, name);
+      //validate password tối thiểu 8 kí tự
+      if (isRequireValid) {
+        isMinLenghtValid = minLengthValidate(inputSelector, name);
+      }
+      // check success
+      if (isRequireValid && isMinLenghtValid) {
+        showSuccess(inputSelector, divMessageSelector);
+      }
     }
   }
 }
@@ -124,6 +133,7 @@ function minLengthValidate(inputSelector, name, message) {
   let minLenght = inputSelector.getAttribute("min_lenght");
   if (valueInput.length < minLenght) {
     isValid = false;
+    inputSelector.classList.add("error");
     let messageError = name + " tối thiểu " + minLenght + " kí tự";
     if (message) {
       messageError = message;
