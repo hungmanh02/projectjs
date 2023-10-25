@@ -3,11 +3,11 @@
 const btnSignUpSelector = document.querySelector(".btn-signup");
 const inputAllSelector = document.querySelectorAll(".form-group input");
 const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const errorMessageAll = document.querySelectorAll(".error_message");
 
 // validate cho từng field một ( từng ô input một)
 // Trong từng ô input check sẽ đính kèm các rule (quy tắc validate) của nó
 
+// ===== start Listener function =====
 // 2. function xử lí sự kiện  + chạy lần đầu khi load
 
 function handleSignUpClick(e) {
@@ -15,58 +15,36 @@ function handleSignUpClick(e) {
   // 1. Thực hiện validate
   for (let i = 0; i < inputAllSelector.length; i++) {
     let inputSelector = inputAllSelector[i];
-    let valueInput = inputSelector.value;
-    let divMessageSelector = inputSelector
-      .closest(".form-group")
-      .querySelector(".error_message");
     let name = inputSelector.name;
     // validate  not empty
     if (name === "name") {
       validateName(inputSelector);
     } else if (name === "email") {
-      if (!require(inputSelector)) {
-        showError(inputSelector, "Email không được để trống");
-      } else if (!minLenght(inputSelector)) {
-        showError(
-          inputSelector,
-          `Email tối thiểu ${inputSelector.getAttribute("min_lenght")}`
-        );
-      } else if (!emailRegex(inputSelector)) {
-        showError(inputSelector, "Email không đúng định dạng");
-      } else {
-        showSuccess(inputSelector);
-      }
+      validateEmail(inputSelector);
     } else if (name === "password") {
-      if (!require(inputSelector)) {
-        showError(inputSelector, "password không được để trống");
-      } else if (!minLenght(inputSelector)) {
-        showError(
-          inputSelector,
-          `password phải ít nhất ${inputSelector.getAttribute(
-            "min_lenght"
-          )} kí tự`
-        );
-      } else {
-        showSuccess(inputSelector);
-      }
+      validatePassword(inputSelector);
     } else {
-      if (!require(inputSelector)) {
-        showError(inputSelector, "confirm password không được để trống");
-      } else if (!minLenght(inputSelector)) {
-        showError(
-          inputSelector,
-          `confirm password phải ít nhất ${inputSelector.getAttribute(
-            "min_lenght"
-          )} kí tự`
-        );
-      } else if (!comparePass(inputSelector)) {
-        showError(inputSelector, "confirm password không trùng với password");
-      } else {
-        showSuccess(inputSelector);
-      }
+      validateConfirmPassword(inputSelector);
     }
   }
 }
+// hàm chỉ chạy khi người dùng nhập value có sự thay đổi
+function handleChangValue(event) {
+  let inputSelector = event.target;
+  let nameInput = inputSelector.name;
+  if (nameInput === "name") {
+    validateName(inputSelector);
+  } else if (nameInput === "email") {
+    validateEmail(inputSelector);
+  } else if (nameInput === "password") {
+    validatePassword(inputSelector);
+  } else {
+    validateConfirmPassword(inputSelector);
+  }
+}
+// ===== end Listener function =====
+
+// ===== start valiate function =====
 
 function validateName(inputSelector) {
   //require
@@ -76,30 +54,54 @@ function validateName(inputSelector) {
     showSuccess(inputSelector);
   }
 }
+function validateEmail(inputSelector) {
+  if (!require(inputSelector)) {
+    showError(inputSelector, "Email không được để trống");
+  } else if (!minLenght(inputSelector)) {
+    showError(
+      inputSelector,
+      `Email tối thiểu ${inputSelector.getAttribute("min_lenght")}`
+    );
+  } else if (!emailRegex(inputSelector)) {
+    showError(inputSelector, "Email không đúng định dạng");
+  } else {
+    showSuccess(inputSelector);
+  }
+}
+function validatePassword(inputSelector) {
+  if (!require(inputSelector)) {
+    showError(inputSelector, "password không được để trống");
+  } else if (!minLenght(inputSelector)) {
+    showError(
+      inputSelector,
+      `password phải ít nhất ${inputSelector.getAttribute("min_lenght")} kí tự`
+    );
+  } else {
+    showSuccess(inputSelector);
+  }
+}
+function validateConfirmPassword(inputSelector) {
+  if (!require(inputSelector)) {
+    showError(inputSelector, "confirm password không được để trống");
+  } else if (!minLenght(inputSelector)) {
+    showError(
+      inputSelector,
+      `confirm password phải ít nhất ${inputSelector.getAttribute(
+        "min_lenght"
+      )} kí tự`
+    );
+  } else if (!comparePass(inputSelector)) {
+    showError(inputSelector, "confirm password không trùng với password");
+  } else {
+    showSuccess(inputSelector);
+  }
+}
 
-// rule require
-// output:return true or false
+// ===== end valiate function =====
+
+// ===== start rule function =====
 function require(inputSelector) {
   return inputSelector.value ? true : false;
-}
-// validate error
-function showError(inputSelector, message = null) {
-  // hiện thị màu đỏ cho ô input
-  inputSelector.classList.add("error");
-  // thêm nội dung lỗi cho message dưới ô input
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  divMessageSelector.textContent = message;
-}
-
-// validate success
-function showSuccess(inputSelector) {
-  inputSelector.classList.remove("error");
-  let divMessageSelector = inputSelector
-    .closest(".form-group")
-    .querySelector(".error_message");
-  divMessageSelector.textContent = "";
 }
 
 // rule min lenght
@@ -125,17 +127,32 @@ function comparePass(inputSelector) {
   let valuePassword = passwordSelector.value;
   return valueConfirmPass === valuePassword;
 }
-// hàm chỉ chạy khi người dùng nhập value có sự thay đổi
-function handleChangValue(event) {
-  let inputSelector = event.target;
-  let nameInput = inputSelector.name;
-  if (nameInput === "name") {
-    validateName(inputSelector);
-  } else if (nameInput === "email") {
-  } else if (nameInput === "password") {
-  } else {
-  }
+
+// ===== end rule function =====
+
+// ===== start message function =====
+
+// validate error
+function showError(inputSelector, message = null) {
+  // hiện thị màu đỏ cho ô input
+  inputSelector.classList.add("error");
+  // thêm nội dung lỗi cho message dưới ô input
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  divMessageSelector.textContent = message;
 }
+
+// validate success
+function showSuccess(inputSelector) {
+  inputSelector.classList.remove("error");
+  let divMessageSelector = inputSelector
+    .closest(".form-group")
+    .querySelector(".error_message");
+  divMessageSelector.textContent = "";
+}
+// ===== end message function =====
+
 // 3. Thêm sự kiện cho phần tử
 
 btnSignUpSelector.addEventListener("click", handleSignUpClick);
