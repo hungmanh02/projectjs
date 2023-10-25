@@ -121,7 +121,13 @@ function comparePass(inputSelector) {
   let valuePassword = passwordSelector.value;
   return valueConfirmPass === valuePassword;
 }
-
+// hàm chỉ chạy khi người dùng nhập value có sự thay đổi
+function handleChangValue(event) {}
 // 3. Thêm sự kiện cho phần tử
 
 btnSignUpSelector.addEventListener("click", handleSignUpClick);
+//thêm sự kiện input cho các ô input nhập liệu
+for (let i = 0; i < inputAllSelector.length; i++) {
+  let inputElement = inputAllSelector[i];
+  inputElement.addEventListener("input", handleChangValue);
+}
