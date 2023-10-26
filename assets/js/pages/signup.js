@@ -12,20 +12,28 @@ const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 function handleSignUpClick(e) {
   e.preventDefault();
+  let isNameValid;
+  let isEmailValid;
+  let isPasswordValid;
+  let isConfirmPassValid;
   // 1. Thực hiện validate
   for (let i = 0; i < inputAllSelector.length; i++) {
     let inputSelector = inputAllSelector[i];
     let name = inputSelector.name;
     // validate  not empty
     if (name === "name") {
-      validateName(inputSelector);
+      isNameValid = validateName(inputSelector);
     } else if (name === "email") {
-      validateEmail(inputSelector);
+      isEmailValid = validateEmail(inputSelector);
     } else if (name === "password") {
-      validatePassword(inputSelector);
+      isPasswordValid = validatePassword(inputSelector);
     } else {
-      validateConfirmPassword(inputSelector);
+      isConfirmPassValid = validateConfirmPassword(inputSelector);
     }
+  }
+  // kiểm tra không có ô input nào có lỗi validate
+  if (isNameValid && isEmailValid && isPasswordValid && isConfirmPassValid) {
+    console.log("login page");
   }
 }
 // hàm chỉ chạy khi người dùng nhập value có sự thay đổi
@@ -47,14 +55,18 @@ function handleChangValue(event) {
 // ===== start valiate function =====
 
 function validateName(inputSelector) {
+  let isValid = false;
   //require
   if (!require(inputSelector)) {
     showError(inputSelector, "Tên không được để trống");
   } else {
     showSuccess(inputSelector);
+    isValid = true;
   }
+  return isValid;
 }
 function validateEmail(inputSelector) {
+  let isValid = false;
   if (!require(inputSelector)) {
     showError(inputSelector, "Email không được để trống");
   } else if (!minLenght(inputSelector)) {
@@ -66,9 +78,12 @@ function validateEmail(inputSelector) {
     showError(inputSelector, "Email không đúng định dạng");
   } else {
     showSuccess(inputSelector);
+    isValid = true;
   }
+  return isValid;
 }
 function validatePassword(inputSelector) {
+  let isValid = false;
   if (!require(inputSelector)) {
     showError(inputSelector, "password không được để trống");
   } else if (!minLenght(inputSelector)) {
@@ -78,9 +93,12 @@ function validatePassword(inputSelector) {
     );
   } else {
     showSuccess(inputSelector);
+    isValid = true;
   }
+  return isValid;
 }
 function validateConfirmPassword(inputSelector) {
+  let isValid = false;
   if (!require(inputSelector)) {
     showError(inputSelector, "confirm password không được để trống");
   } else if (!minLenght(inputSelector)) {
@@ -94,7 +112,9 @@ function validateConfirmPassword(inputSelector) {
     showError(inputSelector, "confirm password không trùng với password");
   } else {
     showSuccess(inputSelector);
+    isValid = true;
   }
+  return isValid;
 }
 
 // ===== end valiate function =====
