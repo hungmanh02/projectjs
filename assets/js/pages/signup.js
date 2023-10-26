@@ -12,7 +12,7 @@ const rules = {
   name: { required: true },
   email: { required: true, minlenght: 3, email: true },
   password: { required: true, minlenght: 8 },
-  confirm_password: { required: true, minlenght: 8, equal_to: password },
+  confirm_password: { required: true, minlenght: 8, equal_to: "password" },
 };
 
 // 2. function xử lí sự kiện  + chạy lần đầu khi load
@@ -20,7 +20,9 @@ const rules = {
 
 function handleSignUpClick(e) {
   e.preventDefault();
-  console.log("click button ");
+  for (const keyNameInput in rules) {
+    console.log("keyNameInput", keyNameInput);
+  }
 }
 // ===== end Listener function =====
 
