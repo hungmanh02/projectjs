@@ -24,10 +24,17 @@ function handleSignUpClick(e) {
     if (name === "name") {
       //require
       if (!require(inputSelector)) {
+<<<<<<< HEAD
         showError(inputSelector, "Tên không được để trống");
       } else {
         showSuccess(inputSelector);
+=======
+        // show error
+      } else {
+        // show success
+>>>>>>> 680ddb282a045c96f1751c04cf25bcd516b2fabe
       }
+      console.log(require(inputSelector));
     } else if (name === "email") {
       // 1. require
       // 2. minLenght
@@ -41,6 +48,23 @@ function handleSignUpClick(e) {
       // 3. compare password
     }
   }
+<<<<<<< HEAD
+=======
+
+  // kiểm tra không có ô input nào có lỗi validate
+  // 1. lưu vào user vào localStorage
+  // 2. redirect đến màn hình login
+  // for (let i = 0; i < errorMessageAll.length; i++) {
+  //   if (errorMessageAll[i].textContent !== "") {
+  //     isFormValid = false;
+  //     break;
+  //   }
+  // }
+
+  // if (isFormValid) {
+  //   console.log("to page login");
+  // }
+>>>>>>> 680ddb282a045c96f1751c04cf25bcd516b2fabe
 }
 
 // rule require
@@ -48,6 +72,7 @@ function handleSignUpClick(e) {
 function require(inputSelector) {
   return inputSelector.value ? true : false;
 }
+<<<<<<< HEAD
 // validate error
 function showError(inputSelector, message = null) {
   // hiện thị màu đỏ cho ô input
@@ -58,6 +83,8 @@ function showError(inputSelector, message = null) {
     .querySelector(".error_message");
   divMessageSelector.textContent = message;
 }
+=======
+>>>>>>> 680ddb282a045c96f1751c04cf25bcd516b2fabe
 
 // validate success
 function showSuccess(inputSelector) {
@@ -95,6 +122,8 @@ function compareFileValidate(inputSelector, name, message) {
 }
 // rule required validate
 function requireValidate(inputSelector, name, message) {
+  // 1. Kiểm tra xem rule có hợp lệ hay không ?
+  // 2. Nếu không hợp lệ, hiện thị thông báo lỗi dưới ô input
   let isValid = true;
   let divMessageSelector = inputSelector
     .closest(".form-group")
