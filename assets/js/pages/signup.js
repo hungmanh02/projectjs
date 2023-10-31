@@ -19,24 +19,19 @@ const rules = {
 
 const methodsRule = {
   required: function (valueInput, paramsInput) {
-    console.log("required running");
     return valueInput ? true : false;
   },
   minlength: function (valueInput, paramsInput) {
-    console.log("minlenght runing");
     return valueInput.length >= paramsInput;
     // return valueInput.min_lenght >= paramsInput ? true : false;
   },
   email: function (valueInput, paramsInput) {
-    console.log("email running");
     return regexEmail.test(valueInput);
     // return regexEmail.test(valueInput) ? true : false; bằng nhau
   },
   equal_to: function (valueInput, paramsInput) {
-    console.log("equal to runing");
     let passSelector = document.querySelector("." + paramsInput);
     let valuePass = passSelector.value;
-    // console.log(valuePass === valueInput);
     return valuePass === valueInput; // trả về kết quả true false
   },
 };
@@ -56,32 +51,35 @@ function handleSignUpClick(e) {
     let ruleAllForInput = rules[keyNameInput];
     let inputElement = document.querySelector("." + keyNameInput);
     let valueInput = inputElement.value;
-    console.log(inputElement);
-
     //reset all error
-    inputElement.classList.remove("error");
-    inputElement.nextElementSibling.textContent = "";
-
+    resetAllError(inputElement);
     // loop qua từng rule validate của input đấy
     for (const ruleItemKey in ruleAllForInput) {
+      // lấy ra value của object item rule
       let paramsInput = ruleAllForInput[ruleItemKey];
       let result = methodsRule[ruleItemKey](valueInput, paramsInput);
       let keyMessage = keyNameInput + "_" + ruleItemKey;
-      console.log(messages[keyMessage]);
-      console.log("result: ", result);
       // kiểm tra validate rule thất bại
-
       if (!result) {
-        inputElement.classList.add("error");
-        inputElement.nextElementSibling.textContent = messages[keyMessage]
-          ? messages[keyMessage]
-          : keyNameInput + " not valid";
+        showMessageError(inputElement, keyMessage, keyNameInput);
         break;
       }
     }
   }
 }
-// ===== end Listener function =====
+function showMessageError(inputElement, keyMessage, keyNameInput) {
+  let message = keyNameInput + " not valid";
+  inputElement.classList.add("error");
+  if (messages[keyMessage]) {
+    message = messages[keyMessage];
+  }
+  inputElement.nextElementSibling.textContent = message;
+}
+function resetAllError(inputElement) {
+  inputElement.classList.remove("error");
+  inputElement.nextElementSibling.textContent = "";
+}
+// ===== End Listener function =====
 
 // 3. Thêm sự kiện cho phần tử
 
