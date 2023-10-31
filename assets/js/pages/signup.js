@@ -10,9 +10,9 @@ const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 // input
 const rules = {
   name: { required: true },
-  email: { required: true, minlenght: 3, email: true },
-  password: { required: true, minlenght: 8 },
-  confirm_password: { required: true, minlenght: 8, equal_to: "password" },
+  email: { required: true, minlength: 3, email: true },
+  password: { required: true, minlength: 8 },
+  confirm_password: { required: true, minlength: 8, equal_to: "password" },
 };
 
 // 2. function xử lí sự kiện  + chạy lần đầu khi load
@@ -22,10 +22,10 @@ const methodsRule = {
     console.log("required running");
     return valueInput ? true : false;
   },
-  minlenght: function (valueInput, paramsInput) {
+  minlength: function (valueInput, paramsInput) {
     console.log("minlenght runing");
-    // return valueInput.lenght >= paramsInput; bằng nhau
-    return valueInput.lenght >= paramsInput ? true : false;
+    return valueInput.length >= paramsInput;
+    // return valueInput.min_lenght >= paramsInput ? true : false;
   },
   email: function (valueInput, paramsInput) {
     console.log("email running");
@@ -36,8 +36,15 @@ const methodsRule = {
     console.log("equal to runing");
     let passSelector = document.querySelector("." + paramsInput);
     let valuePass = passSelector.value;
+    // console.log(valuePass === valueInput);
     return valuePass === valueInput; // trả về kết quả true false
   },
+};
+// message
+const messages = {
+  name_required: "Tên không được để trống",
+  email_required: "Email không được để trống",
+  password_required: "Mật khẩu không được để trống",
 };
 
 // ===== start Listener function =====
@@ -50,11 +57,27 @@ function handleSignUpClick(e) {
     let inputElement = document.querySelector("." + keyNameInput);
     let valueInput = inputElement.value;
     console.log(inputElement);
+
+    //reset all error
+    inputElement.classList.remove("error");
+    inputElement.nextElementSibling.textContent = "";
+
     // loop qua từng rule validate của input đấy
     for (const ruleItemKey in ruleAllForInput) {
       let paramsInput = ruleAllForInput[ruleItemKey];
       let result = methodsRule[ruleItemKey](valueInput, paramsInput);
-      console.log(result);
+      let keyMessage = keyNameInput + "_" + ruleItemKey;
+      console.log(messages[keyMessage]);
+      console.log("result: ", result);
+      // kiểm tra validate rule thất bại
+
+      if (!result) {
+        inputElement.classList.add("error");
+        inputElement.nextElementSibling.textContent = messages[keyMessage]
+          ? messages[keyMessage]
+          : keyNameInput + " not valid";
+        break;
+      }
     }
   }
 }
