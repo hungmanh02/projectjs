@@ -20,15 +20,23 @@ const rules = {
 const methodsRule = {
   required: function (valueInput, paramsInput) {
     console.log("required running");
+    return valueInput ? true : false;
   },
   minlenght: function (valueInput, paramsInput) {
     console.log("minlenght runing");
+    // return valueInput.lenght >= paramsInput; bằng nhau
+    return valueInput.lenght >= paramsInput ? true : false;
   },
   email: function (valueInput, paramsInput) {
     console.log("email running");
+    return regexEmail.test(valueInput);
+    // return regexEmail.test(valueInput) ? true : false; bằng nhau
   },
   equal_to: function (valueInput, paramsInput) {
     console.log("equal to runing");
+    let passSelector = document.querySelector("." + paramsInput);
+    let valuePass = passSelector.value;
+    return valuePass === valueInput; // trả về kết quả true false
   },
 };
 
@@ -45,7 +53,8 @@ function handleSignUpClick(e) {
     // loop qua từng rule validate của input đấy
     for (const ruleItemKey in ruleAllForInput) {
       let paramsInput = ruleAllForInput[ruleItemKey];
-      methodsRule[ruleItemKey](valueInput, paramsInput);
+      let result = methodsRule[ruleItemKey](valueInput, paramsInput);
+      console.log(result);
     }
   }
 }
