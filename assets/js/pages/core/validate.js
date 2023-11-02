@@ -1,5 +1,4 @@
 function Validate(options) {
-  const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   // 1. Lấy ra container bao đống form
   const container = document.querySelector(options.container);
   // 2. Tất cả các elements khác query dựa vào container
@@ -15,8 +14,8 @@ function Validate(options) {
     minlength: function (valueInput, valueRule) {
       return valueInput.length >= valueRule;
     },
-    email: function (valueInput, valueRule) {
-      return regexEmail.test(valueInput);
+    regex: function (valueInput, valueRule) {
+      return valueRule.test(valueInput);
     },
     equal_to: function (valueInput, valueRule) {
       let passSelector = container.querySelector(`.${valueRule}`);
