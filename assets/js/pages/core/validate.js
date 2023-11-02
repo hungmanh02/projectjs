@@ -35,6 +35,8 @@ function Validate(options) {
       const inputSelector = container.querySelector(`.${keyInputName}`);
       const valueInput = inputSelector.value;
       const ruleAllForInput = rules[keyInputName];
+      // reset all errors
+      resetErrors(inputSelector);
       for (const ruleItemKey in ruleAllForInput) {
         const valueRule = ruleAllForInput[ruleItemKey];
         const result = ruleMethod[ruleItemKey](valueInput, valueRule);
@@ -53,7 +55,15 @@ function Validate(options) {
     }
 
     // Hiện thị lỗi
-    console.log(errors);
+    if (errors.length) {
+      showErrors();
+    }
+  }
+  function resetErrors(inputSelector) {
+    inputSelector.classList.remove("error");
+    inputSelector.nextElementSibling.textContent = "";
+  }
+  function showErrors() {
     errors.forEach(function (element) {
       let inputElement = element.elementError;
       let divError = inputElement.nextElementSibling;
