@@ -45,35 +45,56 @@ function Validate(options) {
         element.addEventListener("input", handleInputChange);
       });
   }
+
+  function validateOneElement(element) {
+    const valueInput = element.value;
+    const keyInputName = element.name;
+    const ruleAllForInput = rules[keyInputName];
+    for (const ruleItemKey in ruleAllForInput) {
+      const valueRule = ruleAllForInput[ruleItemKey];
+      const result = ruleMethod[ruleItemKey](valueInput, valueRule);
+      const keyMessage = keyInputName + "_" + ruleItemKey;
+      let messageErrorDefault = messageDefault[ruleItemKey];
+      messageErrorDefault = messageErrorDefault.replace("{min}", valueRule);
+      if (!result) {
+        // đẩy lỗi vào biến đang lưu trữ
+        errors.push({
+          elementError: element,
+          message: messages[keyMessage]
+            ? messages[keyMessage]
+            : messageErrorDefault,
+        });
+        break;
+      }
+    }
+  }
   function handleInputChange(e) {
+    errors = errors || [];
     const inputSelector = e.target;
+    // xóa bỏ lỗi element input ra khỏi mảng lỗi
+    errors = errors.filter(function (element) {
+      return element.elementError.name !== inputSelector.name;
+    });
+
+    // Thêm lỗi vào nếu element có lỗi
+    validateOneElement(inputSelector);
+    // reset errors
+    resetErrors(inputSelector);
+    // Hiện thị lỗi
+    if (errors.length) {
+      showErrors();
+    }
   }
   function handleSignUpClick(e) {
     e.preventDefault();
     errors = [];
+    console.log(errors);
     for (const keyInputName in rules) {
       const inputSelector = container.querySelector(`.${keyInputName}`);
-      const valueInput = inputSelector.value;
-      const ruleAllForInput = rules[keyInputName];
       // reset all errors
       resetErrors(inputSelector);
-      for (const ruleItemKey in ruleAllForInput) {
-        const valueRule = ruleAllForInput[ruleItemKey];
-        const result = ruleMethod[ruleItemKey](valueInput, valueRule);
-        const keyMessage = keyInputName + "_" + ruleItemKey;
-        let messageErrorDefault = messageDefault[ruleItemKey];
-        messageErrorDefault = messageErrorDefault.replace("{min}", valueRule);
-        if (!result) {
-          // đẩy lỗi vào biến đang lưu trữ
-          errors.push({
-            elementError: inputSelector,
-            message: messages[keyMessage]
-              ? messages[keyMessage]
-              : messageErrorDefault,
-          });
-          break;
-        }
-      }
+      // check validate passed for one element input
+      validateOneElement(inputSelector);
     }
 
     // Hiện thị lỗi
