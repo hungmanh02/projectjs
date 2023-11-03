@@ -16,4 +16,5 @@ let signupInstanceValidate = new Validate({
     password_required: "Mật khẩu không được để trống",
     email_regex: "Email không đúng định dạng",
   },
+  // btnClassSubmit: "btn-signup",
 });

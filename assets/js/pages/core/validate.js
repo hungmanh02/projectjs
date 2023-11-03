@@ -1,12 +1,17 @@
 function Validate(options) {
-  // 1. Lấy ra container bao đống form
-  const container = document.querySelector(options.container);
-  // 2. Tất cả các elements khác query dựa vào container
-  const btnSignUpSelector = container.querySelector(".btn-signup");
+  // khai báo biến có option
+  const formGroupClass = options.formGroupClass || "form-group";
+  const btnclassSubmit = options.btnclassSubmit || "btn-signup";
+  const errorClass = options.errorClass || "error";
+  const errorMessageClass = options.errorMessageClass || "error_message";
   const rules = options.rules;
   const messages = options.messages;
-  let errors;
 
+  // truy vấn DOM của thư viện
+  const container = document.querySelector(options.container);
+  const btnSignUpSelector = container.querySelector(`.${btnclassSubmit}`);
+
+  let errors;
   const ruleMethod = {
     required: function (valueInput, valueRule) {
       return valueInput !== "";
@@ -59,19 +64,19 @@ function Validate(options) {
     }
   }
   function resetErrors(inputSelector) {
-    inputSelector.classList.remove("error");
+    inputSelector.classList.remove(errorClass);
     let divError = inputSelector
-      .closest(".form-group")
-      .querySelector(".error_message");
+      .closest(`.${formGroupClass}`)
+      .querySelector(`.${errorMessageClass}`);
     divError.textContent = "";
   }
   function showErrors() {
     errors.forEach(function (element) {
       let inputElement = element.elementError;
       let divError = inputElement
-        .closest(".form-group")
-        .querySelector(".error_message");
-      inputElement.classList.add("error");
+        .closest(`.${formGroupClass}`)
+        .querySelector(`.${errorMessageClass}`);
+      inputElement.classList.add(errorClass);
       divError.textContent = element.message;
     });
   }
