@@ -36,7 +36,17 @@ function Validate(options) {
   };
 
   function initEventAndData() {
+    // sự kiện nhấn button submit form
     btnSignUpSelector.addEventListener("click", handleSignUpClick);
+    // sự kiện input khi thay đổi value cho element
+    container
+      .querySelectorAll(`.${formGroupClass} input`)
+      .forEach(function (element) {
+        element.addEventListener("input", handleInputChange);
+      });
+  }
+  function handleInputChange(e) {
+    const inputSelector = e.target;
   }
   function handleSignUpClick(e) {
     e.preventDefault();
