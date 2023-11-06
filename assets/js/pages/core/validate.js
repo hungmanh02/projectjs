@@ -98,6 +98,11 @@ function Validate(options) {
 
     // Hiện thị lỗi
     showErrors();
+    // gọi hàm thành công khi không có lỗi trong form
+    if (!errors.length) {
+      let successForm = options.success;
+      successForm();
+    }
   }
   function resetErrors(inputSelector) {
     inputSelector.classList.remove(errorClass);
