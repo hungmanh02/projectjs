@@ -64,7 +64,7 @@ function Validate(options) {
             ? messages[keyMessage]
             : messageErrorDefault,
         });
-        break;
+        return false;
       }
     }
   }
@@ -88,7 +88,6 @@ function Validate(options) {
   function handleSignUpClick(e) {
     e.preventDefault();
     errors = [];
-    console.log(errors);
     for (const keyInputName in rules) {
       const inputSelector = container.querySelector(`.${keyInputName}`);
       // reset all errors
@@ -98,9 +97,7 @@ function Validate(options) {
     }
 
     // Hiện thị lỗi
-    if (errors.length) {
-      showErrors();
-    }
+    showErrors();
   }
   function resetErrors(inputSelector) {
     inputSelector.classList.remove(errorClass);
@@ -110,14 +107,16 @@ function Validate(options) {
     divError.textContent = "";
   }
   function showErrors() {
-    errors.forEach(function (element) {
-      let inputElement = element.elementError;
-      let divError = inputElement
-        .closest(`.${formGroupClass}`)
-        .querySelector(`.${errorMessageClass}`);
-      inputElement.classList.add(errorClass);
-      divError.textContent = element.message;
-    });
+    if (errors.length) {
+      errors.forEach(function (element) {
+        let inputElement = element.elementError;
+        let divError = inputElement
+          .closest(`.${formGroupClass}`)
+          .querySelector(`.${errorMessageClass}`);
+        inputElement.classList.add(errorClass);
+        divError.textContent = element.message;
+      });
+    }
   }
 
   // add event listener + data init
