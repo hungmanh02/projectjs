@@ -19,22 +19,36 @@ let signupInstanceValidate = new Validate({
   },
   success: function () {
     // 1. lấy dữ liệu input
-    let users = [];
     let dataForm = {};
-
-    document
-      .querySelectorAll(".form_register input")
-      .forEach(function (element) {
-        if (element.name !== "confirm_password") {
-          dataForm[element.name] = element.value;
-        }
-      });
-    // 2.1 Create data users array
-    dataForm["id"] = crypto.randomUUID();
-    users.push(dataForm);
-    console.log(users);
-    // 2.2 save  to localStorage
-    localStorage.setItem("users", JSON.stringify(users));
+    // 1. Chưa có thông tin user trong localStorage
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    // check emial exits
+    const email = document.querySelector(".form_register .email").value;
+    let isEmailExit = users.some(function (element) {
+      return element.email === email;
+    });
+    // for (let i = 0; users.length; i++) {
+    //   if (users[i].email === email) {
+    //     isEmailExit = true;
+    //     break;
+    //   }
+    // }
+    console.log("isEmailExit", isEmailExit);
+    // Nếu email chưa tồn tại thì mới thêm thông tin user vào local
+    if (!isEmailExit) {
+      document
+        .querySelectorAll(".form_register input")
+        .forEach(function (element) {
+          if (element.name !== "confirm_password") {
+            dataForm[element.name] = element.value;
+          }
+        });
+      // 2.1 Create data users array
+      dataForm["id"] = crypto.randomUUID();
+      users.push(dataForm);
+      // 2.2 save  to localStorage
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   },
   // btnClassSubmit: "btn-signup",
 });
