@@ -40,3 +40,25 @@
 // 1. truyền data từ cha xuống con -- dễ
 // 2. truyền data từ con lên cha
 // -- cần đưa data từ scope con lên cha nhận được
+let users = [
+  { name: "hungmanh4", email: "hungmang1@gmail.com" },
+  { name: "hungmanh2", email: "hungmang2@gmail.com" },
+  { name: "hungmanh3", email: "hungmang3@gmail.com" },
+];
+// Tư duy học hàm some, every, forEach, map, reducer, filter, find, findIndex
+
+// input --> array
+
+// output --> some
+// 1. Nó sẽ return true nếu 1 callback trả về true
+// 2. Nếu nó chạy hết tất cả các phần tử trong mảng --> không có phần tử nào return true -> return false
+function checkOneElementTrue(userArray) {
+  for (let i = 0; i < userArray.length; i++) {
+    if (userArray[i].name === "hungmanh1") {
+      return true;
+    }
+  }
+  return false;
+}
+let isCheckExitName = checkOneElementTrue(users);
+console.log(isCheckExitName);
