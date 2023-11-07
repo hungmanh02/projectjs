@@ -30,13 +30,15 @@ function validateSuccess() {
         element.status = "";
       }
     });
-    // 3. cập nhậ vào local storage
+    // 3. cập nhập vào local storage
     localStorage.setItem("users", JSON.stringify("users"));
     // 4. chuyển hướng đến màn hình admin hoặc home
     window.location.href = "/my-account.html";
+  } else {
+    window.location.href = "/.register.html";
   }
 
-  console.log(users);
+  // console.log(users);
 }
 let loginInstanceValidate = new Validate({
   container: ".login_form",
