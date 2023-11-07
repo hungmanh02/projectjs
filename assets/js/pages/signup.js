@@ -27,7 +27,7 @@ function validateSuccess() {
   // 1. Chưa có thông tin user trong localStorage
   let users = JSON.parse(localStorage.getItem("users")) || [];
   // check emial exits
-  const email = formRegister.querySelector(".email").value;
+  const email = formRegister.querySelector("email").value;
   let isEmailExit = users.some(function (element) {
     return element.email === email;
   });

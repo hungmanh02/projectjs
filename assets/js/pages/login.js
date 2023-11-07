@@ -23,19 +23,29 @@ function validateSuccess() {
   // 2. So sánh email và password với tất cả users trong hệ thống
   const users = JSON.parse(localStorage.getItem("users")) || [];
   if (users.length) {
-    users.forEach(function (element) {
+    const userUpdate = users.map(function (element) {
       if (element.email === email && element.password === password) {
         element.status = "active";
       } else {
         element.status = "";
       }
+      return element;
     });
+    // console.log("users", users);
+    // console.log("userUpdate", userUpdate);
+    // users.forEach(function (element) {
+    //   if (element.email === email && element.password === password) {
+    //     element.status = "active";
+    //   } else {
+    //     element.status = "";
+    //   }
+    // });
     // 3. cập nhập vào local storage
     localStorage.setItem("users", JSON.stringify("users"));
     // 4. chuyển hướng đến màn hình admin hoặc home
-    window.location.href = "/my-account.html";
+    // window.location.href = "/my-account.html";
   } else {
-    window.location.href = "/.register.html";
+    window.location.href = "/.signup.html";
   }
 
   // console.log(users);
