@@ -1,3 +1,4 @@
+const togglePass = document.querySelector(".toogle_password");
 function rules() {
   return {
     name: { required: true },
@@ -45,6 +46,27 @@ function validateSuccess() {
     localStorage.setItem("users", JSON.stringify(users));
   }
 }
+function handleTogglePass(event) {
+  const clicked = event.target;
+  const inputChangeType = clicked
+    .closest(".form-group")
+    .querySelector(".password");
+  const type = inputChangeType.getAttribute("type");
+  if (type === "password") {
+    inputChangeType.setAttribute("type", "text");
+    // xóa class thể hiện pass ẩn
+    clicked.classList.remove("fa-eye-slash");
+    // thêm class thể hiện show pass
+    clicked.classList.add("fa-eye");
+  } else {
+    inputChangeType.setAttribute("type", "password");
+    // xóa class thể hiện show pass
+    clicked.classList.remove("fa-eye");
+    // thêm class thể hiện pass ẩn
+    clicked.classList.add("fa-eye-slash");
+  }
+}
+togglePass.addEventListener("click", handleTogglePass);
 // config validate form
 let signupInstanceValidate = new Validate({
   container: ".form_register",
