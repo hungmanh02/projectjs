@@ -64,8 +64,8 @@ togglePass.addEventListener("click", handleTogglePass);
 // config validate form
 let signupInstanceValidate = new Validate({
   container: ".form_register",
+  btnClassSubmit: "btn-signup",
   rules: rules(),
   messages: messages(),
   success: validateSuccess,
-  // btnClassSubmit: "btn-signup",
 });

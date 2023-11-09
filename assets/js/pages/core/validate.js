@@ -1,7 +1,7 @@
 function Validate(options) {
   // khai báo biến có option
   const formGroupClass = options.formGroupClass || "form-group";
-  const btnclassSubmit = options.btnclassSubmit || "btn-signup";
+  const btnClassSubmit = options.btnClassSubmit || "btn-signup";
   const errorClass = options.errorClass || "error";
   const errorMessageClass = options.errorMessageClass || "error_message";
   const rules = options.rules;
@@ -9,7 +9,7 @@ function Validate(options) {
 
   // truy vấn DOM của thư viện
   const container = document.querySelector(options.container);
-  const btnSignUpSelector = container.querySelector(`.${btnclassSubmit}`);
+  const btnSignUpSelector = container.querySelector(`.${btnClassSubmit}`);
 
   const messageDefault = {
     required: "This field is required",

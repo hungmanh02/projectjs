@@ -42,7 +42,7 @@ function validateSuccess() {
 }
 let loginInstanceValidate = new Validate({
   container: ".login_form",
-  btnclassSubmit: "btn-login",
+  btnClassSubmit: "btn-login",
   rules: rules(),
   messages: messages(),
   success: validateSuccess,
