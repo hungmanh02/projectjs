@@ -9,10 +9,10 @@ function validateSuccess() {
     name: nameCategory,
   };
   // 3. Đưa object vào trong mảng category
-  let categories = JSON.parse(localStorage.getItem("categories")) || [];
-  categories.push(newCate);
+  const categories = JSON.parse(localStorage.getItem("categories")) || [];
+  const categoriesUpdate = [...categories, newCate];
   // 4. Lưu vào trong local
-  localStorage.setItem("categories", JSON.stringify(categories));
+  localStorage.setItem("categories", JSON.stringify(categoriesUpdate));
 }
 let validateCategory = new Validate({
   container: "#category_form_add",
