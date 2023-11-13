@@ -10,7 +10,6 @@ function Validate(options) {
   // truy vấn DOM của thư viện
   const container = document.querySelector(options.container);
   const btnSignUpSelector = container.querySelector(`.${btnClassSubmit}`);
-
   const messageDefault = {
     required: "This field is required",
     minlength: "please enter at latest {min} characters",
@@ -41,6 +40,16 @@ function Validate(options) {
     // sự kiện input khi thay đổi value cho element
     container
       .querySelectorAll(`.${formGroupClass} input`)
+      .forEach(function (element) {
+        element.addEventListener("input", handleInputChange);
+      });
+    container
+      .querySelectorAll(`.${formGroupClass} select`)
+      .forEach(function (element) {
+        element.addEventListener("input", handleInputChange);
+      });
+    container
+      .querySelectorAll(`.${formGroupClass} textarea`)
       .forEach(function (element) {
         element.addEventListener("input", handleInputChange);
       });
