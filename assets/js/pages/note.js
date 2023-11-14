@@ -169,3 +169,4 @@ console.log(isCheckExitName, isCheckExitEmail, isCheckExitCity);
 // kết luận:
 // 1. hàm define điều kiện do người dùng thư viện define ra
 // 2. Thay điều kiện bằng lời gọi hàm
+// Phương thức map() làm 2 việc, for qua và return lại object hay array theo điều kiện

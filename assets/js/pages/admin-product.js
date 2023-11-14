@@ -19,7 +19,42 @@ showCategoryInProduct();
 //Hiện thị products khi load page
 showProductsInlocal();
 function handleUpdateProduct() {
-  console.log("update data");
+  const idUpdate = btnSaveProduct.getAttribute("data-id");
+  // 1. Tạo ra object cho idEdit
+  let objectValue = {};
+  const inputAll = formProduct.querySelectorAll(".form-control-item");
+  inputAll.forEach(function (element) {
+    if (element.name === "category_wrapper_form") {
+      objectValue["category_id"] = element.value;
+    } else {
+      objectValue[element.name] = element.value;
+    }
+  });
+  objectValue.id = idUpdate;
+  const productType = document.querySelector(".type_product:checked").value;
+  objectValue.product_type = productType;
+  // 2. Tạo ra mảng chứa object cần edit và các object khác
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const productsUpdate = products.map(function (element) {
+    if (element.id === idUpdate) {
+      return objectValue;
+    } else {
+      return element;
+    }
+  });
+  // 3. Lưu dữ liệu vào local storage
+
+  localStorage.setItem("products", JSON.stringify(productsUpdate));
+  // 4. Hiển thị dữ liệu từ trong local
+  showProductsInlocal();
+  // 5. reset đến trạnh thái thêm mới sản phẩm
+  btnSaveProduct.textContent = "Save";
+  btnSaveProduct.classList.remove("update");
+  btnSaveProduct.removeAttribute("data-id");
+  // 6. reset input về trạng thái create
+  inputAll.forEach(function (element) {
+    element.value = "";
+  });
 }
 function validateProductSuccess() {
   if (btnSaveProduct.classList.contains("update")) {
@@ -39,7 +74,6 @@ function validateProductSuccess() {
   objectValue.id = crypto.randomUUID();
   const productType = document.querySelector(".type_product:checked").value;
   objectValue.product_type = productType;
-  console.log(objectValue);
   // 2. đưa object vào trong mảng
   let products = JSON.parse(localStorage.getItem("products")) || [];
   const productsNew = [objectValue, ...products];
@@ -49,6 +83,10 @@ function validateProductSuccess() {
   localStorage.setItem("products", JSON.stringify(productsNew));
   // 4. Hiển thị dữ liệu từ trong local
   showProductsInlocal();
+  // 5. reset input về trạng thái ban đầu
+  inputAll.forEach(function (element) {
+    element.value = "";
+  });
 }
 function showProductsInlocal() {
   const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -114,6 +152,7 @@ function handleProcessProduct(event) {
     document.querySelector(
       `.type_product[value="${elementEditting.product_type}"]`
     ).checked = true;
+    // 4. phân biệt trạnh thái create hay update
     btnSaveProduct.textContent = "Update";
     btnSaveProduct.classList.add("update");
     btnSaveProduct.setAttribute("data-id", idEdit);
