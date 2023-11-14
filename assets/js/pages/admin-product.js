@@ -1,5 +1,6 @@
 const selectCate = document.querySelector(".category_wrapper_form");
 const formProduct = document.querySelector("#form_save_product");
+const tbodyProduct = document.querySelector(".product_table");
 function showCategoryInProduct() {
   // 1. Lấy toàn bộ danh mục trong localStorage
   const cateAll = JSON.parse(localStorage.getItem("categories")) || [];
@@ -14,6 +15,8 @@ function showCategoryInProduct() {
 
 // Hiện thị danh mục khi load trang lần đầu
 showCategoryInProduct();
+//Hiện thị products khi load page
+showProductsInlocal();
 function validateProductSuccess() {
   // 1. Lấy ra value của input và tạo ra object chứa thông tin sản phẩm
   let objectValue = {};
@@ -36,7 +39,32 @@ function validateProductSuccess() {
   // 3. Lưu dữ liệu vào local storage
 
   localStorage.setItem("products", JSON.stringify(productsNew));
+  // 4. Hiển thị dữ liệu từ trong local
+  showProductsInlocal();
 }
+function showProductsInlocal() {
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  let htmlResult = "";
+  products.forEach(function (element) {
+    htmlResult =
+      htmlResult +
+      `<tr>
+          <td>${element.name}</td>
+          <td>${element.price_product}</td>
+          <td><img src="${element.image}" alt="${element.name}" /></td>
+          <td>
+            <button class="btn_common btn_edit">
+              Edit
+            </button>
+            <button class="btn_common btn_delete">
+              Delete
+            </button>
+          </td>
+      </tr>`;
+  });
+  tbodyProduct.innerHTML = htmlResult;
+}
+
 let validateProduct = new Validate({
   container: "#form_save_product",
   btnClassSubmit: "btn_save",
