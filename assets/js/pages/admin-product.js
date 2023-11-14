@@ -56,13 +56,34 @@ function showProductsInlocal() {
             <button class="btn_common btn_edit">
               Edit
             </button>
-            <button class="btn_common btn_delete">
+            <button data-id="${element.id}" class="btn_common btn_delete">
               Delete
             </button>
           </td>
       </tr>`;
   });
   tbodyProduct.innerHTML = htmlResult;
+}
+function handleProcessProduct(event) {
+  const clicked = event.target;
+
+  // Kiểm tra nếu click vào button delete mới xử lí xóa
+  if (
+    clicked.classList.contains("btn_delete") &&
+    confirm("Bạn chắc chắn muốn xóa")
+  ) {
+    // 1. Lấy ra id của object cần xóa
+    const idDelete = clicked.getAttribute("data-id");
+    // 2. Xóa object có chứa idDelete
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+    const productsFilter = products.filter(function (element) {
+      return element.id !== idDelete;
+    });
+    // 3. lưu dữ liệu vào local storage "Lưu lại những product không phải idDelete"
+    localStorage.setItem("products", JSON.stringify(productsFilter));
+    // 4. Hiện thị dữ liệu lại ngay lập tức
+    showProductsInlocal();
+  }
 }
 
 let validateProduct = new Validate({
@@ -80,3 +101,5 @@ let validateProduct = new Validate({
   },
   success: validateProductSuccess,
 });
+// Thêm sự kiện xóa và edit cho sản phẩm
+tbodyProduct.addEventListener("click", handleProcessProduct);
