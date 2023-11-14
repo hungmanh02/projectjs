@@ -1,6 +1,7 @@
 const selectCate = document.querySelector(".category_wrapper_form");
 const formProduct = document.querySelector("#form_save_product");
 const tbodyProduct = document.querySelector(".product_table");
+const btnSaveProduct = document.querySelector(".btn_save");
 function showCategoryInProduct() {
   // 1. Lấy toàn bộ danh mục trong localStorage
   const cateAll = JSON.parse(localStorage.getItem("categories")) || [];
@@ -17,7 +18,14 @@ function showCategoryInProduct() {
 showCategoryInProduct();
 //Hiện thị products khi load page
 showProductsInlocal();
+function handleUpdateProduct() {
+  console.log("update data");
+}
 function validateProductSuccess() {
+  if (btnSaveProduct.classList.contains("update")) {
+    handleUpdateProduct();
+    return;
+  }
   // 1. Lấy ra value của input và tạo ra object chứa thông tin sản phẩm
   let objectValue = {};
   const inputAll = formProduct.querySelectorAll(".form-control-item");
@@ -64,6 +72,7 @@ function showProductsInlocal() {
   });
   tbodyProduct.innerHTML = htmlResult;
 }
+
 function handleProcessProduct(event) {
   const clicked = event.target;
 
@@ -95,17 +104,19 @@ function handleProcessProduct(event) {
     });
     // 3. Đưa dữ liệu object edit lấy được vào trong form
     const inputAll = formProduct.querySelectorAll(".form-control-item");
-    // Đưa value vào input trừ radio
+    // 4. Đưa value vào input trừ radio
     inputAll.forEach(function (element) {
       const keyName =
         element.name === "category_wrapper_form" ? "category_id" : element.name;
-      // console.log(keyName);
       element.value = elementEditting[keyName];
     });
     // Đưa value vào radio box
     document.querySelector(
       `.type_product[value="${elementEditting.product_type}"]`
     ).checked = true;
+    btnSaveProduct.textContent = "Update";
+    btnSaveProduct.classList.add("update");
+    btnSaveProduct.setAttribute("data-id", idEdit);
   }
 }
 
